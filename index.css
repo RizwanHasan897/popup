@@ -1,0 +1,912 @@
+* {
+  box-sizing: border-box;
+}
+  
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: #000;
+  overflow: hidden;
+}
+  
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: antiquewhite;
+  width: 100%;
+  padding: 1.5em;
+  color: #000;
+  z-index: -100;
+}
+  
+.header button {
+  font-size: 1.2rem;
+  padding: 0.5em;
+  background-color: rgb(255, 150, 13);
+  border: 1px rgb(215, 122, 0);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: #000;
+}
+
+.theme-icon-btn {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  align-self: center;
+  border: none;
+}
+
+.theme-icon-btn img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.theme-list-div{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: .5;
+    border: 1px solid black;
+    width: fit-content;
+    right: 50%;
+}
+
+.theme-list {
+    list-style: none;
+    width: 5rem;
+    background-color: yellow;
+    font-size: 1.5em;
+}
+
+.theme-list-btn{
+    background-color: transparent;
+    border: none;
+    padding: .5em;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.theme-list-btn:hover{
+    background-color: rgba(54, 54, 6, 0.477);
+}
+  
+
+.header button:hover {
+  background-color: rgb(239, 174, 90);
+  border: 1px rgb(255, 255, 254);
+}
+  
+.pop-up-div {
+  position: absolute;
+  width: 400px;
+  height: auto;
+  border: 1px solid #000;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  top: 20vh;
+  left: 50vw;
+  min-width: 100px;
+  min-height: 100px;
+  z-index: 1;
+}
+ 
+.pop-up-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #000;
+  color: #000;
+}
+  
+.pop-up-body {
+  /* padding: 15px; */
+  resize: both;
+  overflow: auto;
+  background-color: #fff;
+  color: #000;
+}
+  
+.pop-btn {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 1.5rem;
+  align-items: center;
+}
+
+.resize-handle {
+  width: 4px;
+  height: 4px;
+  background-color: red;
+  position: absolute;
+}
+  
+.top {
+  top: 0;
+  width: 100%;
+  cursor: ns-resize;
+  background-color: #000;
+}
+  
+.bottom {
+  bottom: 0;
+  width: 100%;
+  cursor: ns-resize;
+  background-color: #000;
+}
+  
+.right {
+  top: 0;
+  right: 0;
+  height: 100%;
+  cursor: ew-resize;
+  background-color: #000;
+}
+  
+.left {
+  top: 0;
+  left: 0;
+  height: 100%;
+  cursor: ew-resize;
+  background-color: #000;
+}
+  
+.top-left {
+  top: 0;
+  left: 0;
+  cursor: nwse-resize;
+  z-index: 1;
+}
+  
+.top-right {
+  top: 0;
+  right: 0;
+  cursor: nesw-resize;
+  z-index: 1;
+}
+  
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
+  z-index: 1;
+}
+  
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  z-index: 1;
+}
+  
+.selected {
+  z-index: 99;
+}
+  
+.darkmode {
+  background-color: #333;
+  color: #fff;
+}
+  
+.darkmode .header {
+  background-color: #444;
+}
+  
+
+.darkmode .pop-up-body{
+  border: 3px solid black;
+}
+
+.darkmode .header button {
+  background-color: #555;
+  color: #fff;
+}
+  
+.darkmode .pop-up-header {
+  background-color: #666;
+}
+
+.darkmode .pop-btn {
+  color: #fff;
+}
+
+.darkmode .resize-handle{
+  background-color: #fff;
+}
+
+.darkmode .theme-icon-btn img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+  
+.bright {
+  background-color: #f5f5f5;
+  color: #000;
+}
+  
+.bright .header {
+  background-color: #f8f8f8;
+}
+  
+.bright .header button {
+  background-color: #eee;
+  color: #000;
+  border: 2px solid #9e9e9e;
+}
+  
+.bright .pop-up-header {
+    background-color: #ddd;
+}
+
+.bright .resize-handle {
+    background-color: #9e9e9e;
+}
+  
+.colorblind {
+    background-color: #fff;
+    color: #000;
+}
+  
+.colorblind .header {
+    background-color: #D81B60;
+}
+  
+.colorblind .header button {
+    background-color: #FFC107;
+    color: #000;
+    border: 1px solid #1E88E5;
+}
+  
+.colorblind .pop-up-header {
+    background-color: #D81B60;
+}
+
+.colorblind .pop-up-header button {
+  color: #FFC107;
+}
+
+.colorblind .theme-icon-btn img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+
+.funcky {
+    background-image: linear-gradient(to right, purple, pink);
+    color: #fff;
+}
+  
+.funcky .header {
+    background-image: linear-gradient(to right, darkviolet, hotpink);
+}
+  
+.funcky .header button {
+    background-image: linear-gradient(to right, darkorchid, mediumvioletred);
+    color: #fff;
+    border: 2px solid #fff;
+}
+  
+.funcky .pop-up-header {
+    background-image: linear-gradient(to right, darkmagenta, deeppink);
+}
+
+.funcky .pop-btn {
+    color: #fff;
+}
+
+.funcky .resize-handle{
+    background-color: pink;
+}
+
+.starwars {
+  background-image: url('images/starwars-back.jpg');
+  color: #fff;
+}
+
+
+.starwars .header {
+  background-color: #000;
+}
+
+.starwars .header button {
+  background-color: #222;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.starwars .pop-up-header {
+  background-color: #444;
+}
+
+.starwars .top {
+  background: linear-gradient(90deg, yellow 80%, black 80%, black 100%);
+}
+.starwars .bottom {
+  background: linear-gradient(90deg, black 60%, yellow 60%, yellow 100%);
+}
+
+.starwars .left,
+.starwars .right {
+  animation: changeBackground 2s linear infinite alternate;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); 
+  width: .5rem;
+  box-shadow: #D81B60;
+}
+
+.starwars .top-left,
+.starwars .top-right,
+.starwars .bottom-left,
+.starwars .bottom-right{
+  background-color: transparent;
+}
+
+@keyframes changeBackground {
+  0% {
+    background: red;
+  }
+
+  100% {
+    background: blue;
+  }
+}
+
+.starwars .pop-up-body{
+  background-image: url('images/starwars-body.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: yellow;
+}
+.starwars .pop-up-body p {
+  background-color: black; 
+  padding: 10px; 
+  opacity: 0.8; 
+}
+
+.starwars .pop-up-header {
+  background-image: url('images/starwars-header.jpg');
+  background-position: center;
+  background-size: cover;
+  filter: brightness(0.4);
+}
+
+.starwars .pop-up-header button{
+  color: yellow;
+}
+
+.starwars .theme-icon-btn img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+
+.anime {
+  background-image: url('images/anime-background.webp');
+  background-size: cover;
+  color: #fff;
+}
+
+.anime .header {
+  background-color: #0294C3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-image: url('images/anime-header-background.jpg');
+  background-position: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: -10%;
+  }
+  100% {
+    background-position: 110%;
+  }
+}
+
+.anime .header button {
+  background-color: white; 
+  background-image: linear-gradient(to right, #022b38, #0294C3); 
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.5em;
+}
+
+.anime .header button:hover {
+  background-color: #ff66b2;
+  background-image: linear-gradient(to right, #ff66b2, #b266ff);
+}
+
+.anime .theme-icon-btn img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.anime .bottom {
+  position: relative;
+  width: 50%;
+  left: 25%;
+  margin: 0 auto;
+}
+
+
+.anime .pop-up-body,
+.anime .pop-up-div,
+.anime .pop-up-header,
+.anime .pop-up-header button{
+  background-color: blue;
+  color: #fdfdfd;
+}
+
+
+.anime .bottom {
+  animation: spiritBombAnimation 1s linear;
+}
+
+.anime .pop-up-body::-webkit-scrollbar-track {
+  background-color: rgb(110, 110, 245);
+}
+.anime .pop-up-body::-webkit-scrollbar-thumb {
+  background-color: yellow;
+}
+.anime .pop-up-body::-webkit-scrollbar{
+    background-color: rgb(5, 5, 85);
+}
+
+.anime .resize-handle{
+  background-color: yellow;
+}
+
+.anime .bottom::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 150%;
+  width: 100%;
+  height: 100px;
+  background-color: transparent;
+  background-image: url('images/goku.jpg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1;
+  margin: 0 auto;  
+  animation: none;
+}
+
+@keyframes spiritBombAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/*cars*/
+.car .header {
+  background-color: white;
+  background-image: url('images/cars-header.png');
+  background-position: center;
+  background-size: cover;
+}
+
+.car {
+  background-image: url('images/car-background.jpg');
+  background-size: cover;
+  color: #fff;
+}
+
+.car .header button {
+  border: 2px solid black;
+  border-radius: 50px;
+}
+
+.car .header #PopUp{
+  background-image: linear-gradient(to right,#f34444, red, #f34444);
+}
+
+.car .header #Move{
+  background-image: linear-gradient(to right,rgb(236, 236, 118), yellow, rgb(175, 175, 0));
+}
+
+.car .header #Resize{
+  background-image: linear-gradient(to right,rgb(133, 238, 133), rgb(9, 226, 9), rgb(8, 142, 8));
+}
+
+.car .left,
+.car .right{
+  position: relative;
+  height: 50%;
+  top: 25%;
+  margin: 0 auto;
+}
+
+.car .left::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -2900%;
+  width: 115px;
+  height: 100px;
+  background-color: transparent;
+  background-image: url('images/car-left.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1;
+  margin: 0 auto;  
+  animation: none;
+}
+
+.car .right::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -2800%;
+  width: 115px;
+  height: 100px;
+  background-color: transparent;
+  background-image: url('images/car-right.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1;
+  margin: 0 auto;  
+  animation: none;
+}
+
+.car .top,
+.car .bottom{
+  width: 50%;
+  left: 25%;
+  position: relative;
+}
+
+.car .top::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 115px;
+  left: 20%;
+  height: 50px;
+  background-color: transparent;
+  background-image: url('images/car-top.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1;
+  margin: 0 auto;  
+  animation: none;
+}
+
+.car .pop-up-header {
+  background-color: #9e8fb2;
+  background-image: linear-gradient(315deg, #9e8fb2 0%, #a7acd9 74%);
+}
+
+.car .pop-up-body{
+  background-color: #000000;
+  background-image: linear-gradient(315deg, #000000 0%, #7f8c8d 74%);
+  color: #fdfdfd;
+}
+
+/* rocket */ 
+.rocket {
+  content: '';
+  background-image: url('images/rocket-background.jpg');
+  background-size: cover;
+  color: #fff;
+}
+
+.rocket .header {
+  background-color: #000;
+}
+
+.rocket .header button {
+  background-color: #222;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.rocket .pop-up-header{
+  background-color: #444;
+  color: #fdfdfd;
+  width: 100%;
+}
+
+.rocket .pop-btn {
+  color: #fdfdfd;
+}
+
+
+.rocket .pop-up-div {
+  width: 200px;
+  height: 250px;
+}
+
+
+.rocket .bottom{
+  position: absolute;
+}
+
+.rocket .bottom::before {
+  position: absolute;
+  content: '';
+  width: 50px;
+  height: 50px;
+  left: 29%;
+  top: 1450%; 
+  transform-origin: center bottom;
+  animation-name: flicker;
+  animation-duration: 3ms;
+  animation-delay: 200ms;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  scale: 2;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  transform:rotateY(-180deg) ;
+  background:orange;
+  box-shadow: 0px 0px 5px 4px OrangeRed;
+}
+
+.rocket .bottom::after{
+  position: absolute;
+  content: '';
+  top: 5px;
+  width: 50px;
+  left: 53%;
+  height: 50px;
+  z-index: 5;
+  background: OrangeRed;
+  box-shadow: 0px 0px 5px 4px OrangeRed;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  transform: rotate(90deg);
+  animation-name: flicker;
+  animation-duration: 3ms;
+  animation-delay: 200ms;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  scale: 1.5;
+}
+
+
+.rocket .bottom::after{
+  position: absolute;
+  content: '';
+  top: 5px;
+  width: 50px;
+  left: 35%;
+  height: 50px;
+  z-index: 5;
+  background:white;
+  box-shadow: 0px 0px 9px 4px white;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  transform:rotate(-180deg);
+  animation-name: flicker;
+  animation-duration: 3ms;
+  animation-delay: 200ms;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  scale: 1;
+}
+
+@keyframes flicker{
+  0%   {transform: rotate(1deg);}
+  20%  {transform: rotate(-1deg);}
+  40%  {transform: rotate(1deg);}
+  60%  {transform: rotate(-1deg) scaleY(1.04);}
+  80%  {transform: rotate(2deg) scaleY(0.92);}
+  100% {transform: rotate(-1deg);}
+}
+
+.rocket .top{
+  position: relative;
+}
+
+.rocket .pop-up-div {
+  min-width: 150px;
+}
+
+.rocket .top::after{
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100px;
+  background-color: transparent;
+  background-image: url('images/rocket-top.png');
+  background-position: center;
+  background-size: fill;
+  background-repeat: no-repeat;
+  top: -80px;
+  z-index: -1;
+
+}
+
+.rocket .left{
+  position: relative;
+} 
+
+.rocket .left::after{
+  position: absolute;
+  content: '';
+  width: 100px;
+  height: 50%;
+  top: 50%;
+  background-color: transparent;
+  background-image: url('images/rocket-left.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  left: -65px;
+  z-index: -1;
+}
+
+.rocket .right{
+  position: relative;
+} 
+
+.rocket .right::after{
+  position: absolute;
+  content: '';
+  width: 100px;
+  height: 50%;
+  top: 50%;
+  background-color: transparent;
+  background-image: url('images/rocket-right.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  left: -10px;
+  z-index: -1;
+}
+
+.rocket .theme-icon-btn img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+
+@keyframes moveToTop {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-150%);
+  }
+}
+
+@keyframes moveDown {
+  from {
+    transform: translateY(-150%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.move-to-top {
+  animation: moveToTop 3s ease;
+}
+.move-down {
+  animation: moveDown 3s ease;
+}
+
+
+/*Popup body*/
+
+
+.pop-up-body > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.existing-user,
+.new-user {
+  width: 80%;
+  
+}
+.existing-user > p,
+.new-user > p {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.existing-user-btn,
+.new-user-btn {
+  text-align: center;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: .5rem;
+  font-size: 1.2rem;
+}
+
+
+.new-user-btn{
+  background-color: orange;
+}
+
+.new-user-btn:hover {
+  background-color: rgba(255, 166, 0, 0.621);
+
+}
+
+.existing-user-btn{
+  background-color: greenyellow;
+  margin-bottom: 20px;
+}
+
+.existing-user-btn:hover{
+  background-color: rgba(172, 255, 47, 0.614);
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  width: 100%;
+  font-size: 1.5rem;
+  gap: 10px;
+}
+
+form > * {
+  width: 50%;
+}
+
+form > input {
+  padding: .5rem;
+}
+
+.sumbit-btn{
+  text-align: center;
+  width: 50%;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: .5rem;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  background-color: greenyellow;
+}
+
+.sumbit-btn:hover{
+  background-color: rgba(172, 255, 47, 0.384);
+}
