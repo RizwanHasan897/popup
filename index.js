@@ -4,16 +4,11 @@ var visibility = false;
 var isMouseDown = false;
 var resizeHandles = [];
 var selectedPopUp = null;
-let themeOptionDiv = null; 
+let themeOptionDiv = null;
 
-// import data from './users.json'  assert { type: 'json' }
-// console.log(data)
-
-//mobile differnt screen, resolution 
-//media qurey, JS, touch/touch device, oriantation, keybaord, 
-//local network, open files with local netowrk.
-//ip address, https server, netlify, node.js 
-//generate a JSon, get data from 
+function isTouchDevice() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
 
 function loadPanel() {
   const header = document.createElement('div');
@@ -41,7 +36,12 @@ function loadPanel() {
     buttonClass.id = subBtn.name;
     buttonClass.innerText = subBtn.name;
     btnDiv.appendChild(buttonClass);
-    buttonClass.addEventListener('click', subBtn.func);
+
+    if (isTouchDevice()) {
+      buttonClass.addEventListener('touchstart', subBtn.func);
+    } else {
+      buttonClass.addEventListener('click', subBtn.func);
+    }
 
     header.appendChild(btnDiv);
   });
@@ -51,10 +51,13 @@ function loadPanel() {
   themeBtn.innerHTML = '<img src="images/colorpalette.png" />';
   document.body.appendChild(themeBtn);
 
-  themeBtn.addEventListener('click', addThemeList)
+  if (isTouchDevice()) {
+    themeBtn.addEventListener('touchstart', addThemeList);
+  } else {
+    themeBtn.addEventListener('click', addThemeList);
+  }
 }
 
-// create pop up & function
 function createPopUp() {
   const popUpDiv = document.createElement('div');
   popUpDiv.classList.add('pop-up-div');
@@ -62,7 +65,8 @@ function createPopUp() {
   const popUpHeader = document.createElement('div');
   popUpHeader.classList.add('pop-up-header');
   const popUpBody = document.createElement('div');
-  popUpBody.classList.add('pop-up-body');
+  popUpBody.classList.add('pop-up-body', 'touch-scrollable');
+
   const popUpBtnArray = [
     {
       button: '□',
@@ -79,25 +83,33 @@ function createPopUp() {
     popUpBtn.innerText = popBtn.button;
     popUpBtn.classList.add('pop-btn')
     popUpHeader.appendChild(popUpBtn);
-    popUpBtn.addEventListener('click', popBtn.func);
+
+    if (isTouchDevice()) {
+      popUpBtn.addEventListener('touchstart', popBtn.func);
+    } else {
+      popUpBtn.addEventListener('click', popBtn.func);
+    }
   });
 
-  
   popUpDiv.appendChild(popUpHeader);
   popUpDiv.appendChild(popUpBody);
-  
+
   document.body.appendChild(popUpDiv);
-  
-  popUpHeader.onmousedown = onMouseDown.bind(popUpDiv);
-  popUpBody.onmousedown = onMouseDown.bind(popUpDiv);
-  
+
+  if (isTouchDevice()) {
+    popUpHeader.addEventListener('touchstart', onTouchStart.bind(popUpDiv));
+    popUpHeader.addEventListener('touchmove', onTouchMove.bind(popUpDiv));
+    popUpHeader.addEventListener('touchend', onTouchEnd.bind(popUpDiv));
+  } else {
+    popUpHeader.onmousedown = onMouseDown.bind(popUpDiv);
+  }
+
   moveable = false;
   resizeable = false;
   addMovement();
   allowResize();
-  popUpWelcomeScreen(popUpBody)
+  popUpWelcomeScreen(popUpBody);
 }
-
 
 function enlargePopUp() {
   const popDiv = this.parentNode.parentNode.getElementsByClassName('pop-up-body')[0];
@@ -112,8 +124,7 @@ function closepopUp() {
   }
 }
 
-
-function popUpWelcomeScreen(popUpBody){
+function popUpWelcomeScreen(popUpBody) {
   const welcomePageDiv = document.createElement('div');
   welcomePageDiv.classList.add('welcome-page');
 
@@ -129,46 +140,46 @@ function popUpWelcomeScreen(popUpBody){
   const newUserButton = document.createElement('button');
   newUserButton.classList.add('new-user-btn');
   newUserButton.textContent = 'Create User';
-  
+
   newUserDiv.appendChild(newUserParagraph);
   newUserDiv.appendChild(newUserButton);
-  
+
   const existingUserDiv = document.createElement('div');
   existingUserDiv.classList.add('existing-user');
-  
+
   const existingUserParagraph = document.createElement('p');
   existingUserParagraph.textContent = 'If you are an existing user';
-  
+
   const existingUserButton = document.createElement('button');
   existingUserButton.classList.add('existing-user-btn');
   existingUserButton.textContent = 'Log in';
-  
-  
+
+
   existingUserDiv.appendChild(existingUserParagraph);
   existingUserDiv.appendChild(existingUserButton);
-  
+
   welcomePageDiv.appendChild(welcome);
   welcomePageDiv.appendChild(newUserDiv);
   welcomePageDiv.appendChild(existingUserDiv);
-  
-  
+
+
   popUpBody.appendChild(welcomePageDiv);
-  existingUserButton.addEventListener('click', ()=> {
+  existingUserButton.addEventListener('click', () => {
     popUpLogin(popUpBody, welcomePageDiv);
   })
 
   newUserButton.addEventListener('click', () => {
-    popUpRegister(popUpBody,welcomePageDiv );
+    popUpRegister(popUpBody, welcomePageDiv);
   })
-  
+
 }
 
-function popUpRegister(popUpBody, welcomePageDiv){
+function popUpRegister(popUpBody, welcomePageDiv) {
   popUpBody.innerHTML = ` <input type="text" class="username" name="username" placeholder="Enter username here...">`
 }
 
 
-function popUpLogin(popUpBody, welcomePageDiv){
+function popUpLogin(popUpBody, welcomePageDiv) {
   const form = document.createElement('form');
 
   const usernameLabel = document.createElement('label');
@@ -196,7 +207,7 @@ function popUpLogin(popUpBody, welcomePageDiv){
   submitButton.classList.add('sumbit-btn');
   submitButton.textContent = 'Log In';
 
-  submitButton.addEventListener('click', (e)=> {
+  submitButton.addEventListener('click', (e) => {
     e.preventDefault();
     saveLogin(usernameInput, passwordInput)
   })
@@ -207,14 +218,14 @@ function popUpLogin(popUpBody, welcomePageDiv){
   form.appendChild(passwordLabel);
   form.appendChild(passwordInput);
   form.appendChild(submitButton);
-  
+
   popUpBody.appendChild(form);
   welcomePageDiv.remove();
 
 }
 
 
-function saveLogin(usernameInput, passwordInput){
+function saveLogin(usernameInput, passwordInput) {
   const logInData = {
     username: usernameInput.value,
     password: passwordInput.value
@@ -227,18 +238,55 @@ function saveLogin(usernameInput, passwordInput){
 // move pop up
 function addMovement() {
   const moveBtn = document.getElementById('Move');
-  
+
   if (moveable) {
     moveable = false;
     moveBtn.innerText = 'Move: Off';
     document.body.style.cursor = 'default';
     document.querySelector('.pop-up-div').style.cursor = 'default';
+
+    if (isTouchDevice()) {
+      document.removeEventListener('touchmove', onTouchMove, { passive: false });
+      document.removeEventListener('touchend', onTouchEnd);
+    }
   } else {
     moveable = true;
     moveBtn.innerText = 'Move: On';
     document.body.style.cursor = 'move';
     document.querySelector('.pop-up-div').style.cursor = 'move';
+
+    if (isTouchDevice()) {
+      document.addEventListener('touchmove', onTouchMove, { passive: false });
+      document.addEventListener('touchend', onTouchEnd);
+    }
   }
+}
+
+function onTouchStart(event) {
+  event.preventDefault();
+  selectedPopUp = this;
+  const touch = event.touches[0];
+  const popDivPos = this.getBoundingClientRect();
+  this.coordinates = {
+    x: touch.clientX - popDivPos.left,
+    y: touch.clientY - popDivPos.top
+  };
+}
+
+function onTouchMove(event) {
+  event.preventDefault();
+  if (selectedPopUp === this && moveable) {
+    const touch = event.touches[0];
+    const newLeft = touch.clientX - this.coordinates.x;
+    const newTop = touch.clientY - this.coordinates.y;
+
+    this.style.left = `${newLeft}px`;
+    this.style.top = `${newTop}px`;
+  }
+}
+
+function onTouchEnd(event) {
+  selectedPopUp = null;
 }
 
 function onMouseDown(event) {
@@ -301,7 +349,7 @@ function allowResize() {
       popUpBody.style.overflowX = 'hidden';
       disableResize(popUpDiv);
     });
-  } else if(resizeBtn) {
+  } else if (resizeBtn) {
     resizeable = true;
     resizeBtn.innerText = 'Resize: On';
 
@@ -338,8 +386,62 @@ function createResizeHandle(className, cursor, vertical, horizontal, parent) {
   resizeHandles.push({ element: handle, vertical: vertical, horizontal: horizontal });
 
   handle.style.position = 'absolute';
-  handle.addEventListener('mousedown', startResize);
+
+  if (isTouchDevice()) {
+    handle.addEventListener('touchstart', startResizeTouch);
+  } else {
+    handle.addEventListener('mousedown', startResize);
+  }
 }
+
+function startResizeTouch(event) {
+  event.preventDefault();
+  let isResizing = false;
+  const popUpDiv = this.parentNode;
+  const initialWidth = popUpDiv.offsetWidth;
+  const initialHeight = popUpDiv.offsetHeight;
+  const initialLeft = popUpDiv.offsetLeft;
+  const initialTop = popUpDiv.offsetTop;
+  const touch = event.touches[0];
+  const startX = touch.clientX;
+  const startY = touch.clientY;
+  const handle = getHandleByElement(event.target);
+
+  document.addEventListener('touchmove', handleResizeTouch, { passive: false });
+  document.addEventListener('touchend', stopResizeTouch);
+
+  function handleResizeTouch(event) {
+    event.preventDefault();
+    let width = initialWidth;
+    let height = initialHeight;
+    let deltaX = event.touches[0].clientX - startX;
+    let deltaY = event.touches[0].clientY - startY;
+
+    if (handle.horizontal === 'right') {
+      width += deltaX;
+    } else if (handle.horizontal === 'left') {
+      width -= deltaX;
+      popUpDiv.style.left = initialLeft + deltaX + 'px';
+    }
+
+    if (handle.vertical === 'bottom') {
+      height += deltaY;
+    } else if (handle.vertical === 'top') {
+      height -= deltaY;
+      popUpDiv.style.top = initialTop + deltaY + 'px';
+    }
+
+    popUpDiv.style.width = width + 'px';
+    popUpDiv.style.height = height + 'px';
+  }
+
+  function stopResizeTouch() {
+    isResizing = false;
+    document.removeEventListener('touchmove', handleResizeTouch, { passive: false });
+    document.removeEventListener('touchend', stopResizeTouch);
+  }
+}
+
 
 function disableResize(popUpDiv) {
   const handles = Array.from(popUpDiv.getElementsByClassName('resize-handle'));
@@ -406,46 +508,46 @@ function getHandleByElement(element) {
 // Change themes
 function addThemeList() {
   const themeOption = [
-      'Original',
-      'darkmode',
-      'bright',
-      'colorblind',
-      'funcky',
-      'starwars',
-      'anime',
-      'car',
-      'rocket'
+    'Original',
+    'darkmode',
+    'bright',
+    'colorblind',
+    'funcky',
+    'starwars',
+    'anime',
+    'car',
+    'rocket'
   ];
 
   if (themeOptionDiv) {
-      document.body.removeChild(themeOptionDiv);
-      themeOptionDiv = null; 
-      themePopUp = false;
+    document.body.removeChild(themeOptionDiv);
+    themeOptionDiv = null;
+    themePopUp = false;
   } else {
-      const themeBtn = document.getElementsByClassName('theme-icon-btn')[0];
-      const themeBtnPos = themeBtn.getBoundingClientRect()
+    const themeBtn = document.getElementsByClassName('theme-icon-btn')[0];
+    const themeBtnPos = themeBtn.getBoundingClientRect()
 
 
-      themeOptionDiv = document.createElement('div'); 
-      themeOptionDiv.classList.add('theme-list-div');
+    themeOptionDiv = document.createElement('div');
+    themeOptionDiv.classList.add('theme-list-div');
 
-      themeOption.forEach(theme => {
-          const themeOptionList = document.createElement('li');
-          themeOptionList.classList.add('theme-list');
-          let themeListBtn = document.createElement('button');
-          themeListBtn.classList.add('theme-list-btn');
-          themeListBtn.innerText = theme;
-          themeListBtn.addEventListener('click', e => {
-            changeTheme(e.target.innerText);
-          });
-          themeOptionDiv.appendChild(themeOptionList);
-          themeOptionList.appendChild(themeListBtn);
-        });
-        themeOptionDiv.style.top = (themeBtnPos.y + themeBtnPos.height) + 'px';
-        themeOptionDiv.style.left = themeBtnPos.x +'px';
-        document.body.appendChild(themeOptionDiv);
-        
-      themePopUp = true;
+    themeOption.forEach(theme => {
+      const themeOptionList = document.createElement('li');
+      themeOptionList.classList.add('theme-list');
+      let themeListBtn = document.createElement('button');
+      themeListBtn.classList.add('theme-list-btn');
+      themeListBtn.innerText = theme;
+      themeListBtn.addEventListener('click', e => {
+        changeTheme(e.target.innerText);
+      });
+      themeOptionDiv.appendChild(themeOptionList);
+      themeOptionList.appendChild(themeListBtn);
+    });
+    themeOptionDiv.style.top = (themeBtnPos.y + themeBtnPos.height) + 'px';
+    themeOptionDiv.style.left = themeBtnPos.x + 'px';
+    document.body.appendChild(themeOptionDiv);
+
+    themePopUp = true;
   }
 }
 

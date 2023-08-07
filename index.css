@@ -94,8 +94,6 @@ body {
   border: 1px solid #000;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  top: 20vh;
-  left: 50vw;
   min-width: 100px;
   min-height: 100px;
   z-index: 1;
@@ -909,4 +907,33 @@ form > input {
 
 .sumbit-btn:hover{
   background-color: rgba(172, 255, 47, 0.384);
+}
+.welcome-page > h3 {
+  text-align: center;
+  font-size: 15px;
+}
+
+.pop-up-body.touch-scrollable {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media only screen and (max-width: 525px) {
+  .header {
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pop-up-div{
+    width: 200px;
+    height: 200px;
+    overflow: auto;
+  }
+
+  .pop-up-body {
+    padding: 10px;
+  }
+  
 }
