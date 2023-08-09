@@ -4,7 +4,24 @@ var visibility = false;
 var isMouseDown = false;
 var resizeHandles = [];
 var selectedPopUp = null;
-let themeOptionDiv = null;
+var themeOptionDiv = null;
+
+let users = [
+  {
+    username: 'test',
+    password: 'test',
+    theme: 'Original'
+  },
+  {
+    username: 'redgy',
+    password: 'password',
+    theme: 'darkmode'
+  }
+]
+
+let users_serialized = JSON.stringify(users)
+let users_deserialized = JSON.parse(localStorage.getItem('users'))
+
 
 function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -209,8 +226,13 @@ function popUpLogin(popUpBody, welcomePageDiv) {
 
   submitButton.addEventListener('click', (e) => {
     e.preventDefault();
-    saveLogin(usernameInput, passwordInput)
-  })
+    users.forEach(user => {
+      if (user.username === usernameInput.value && user.password === passwordInput.value) {
+        changeTheme(user.theme);
+        mainPage(usernameInput.value, popUpBody);
+      }
+    });
+  });
 
 
   form.appendChild(usernameLabel);
@@ -223,18 +245,9 @@ function popUpLogin(popUpBody, welcomePageDiv) {
   welcomePageDiv.remove();
 
 }
-
-
-function saveLogin(usernameInput, passwordInput) {
-  const logInData = {
-    username: usernameInput.value,
-    password: passwordInput.value
-  }
-
-  const logInDataJson = JSON.stringify(logInData);
-  console.log(logInDataJson)
+function mainPage(username, popUpBody) {
+  popUpBody.innerHTML = `<h1>Hello ${username} </h1>`
 }
-
 // move pop up
 function addMovement() {
   const moveBtn = document.getElementById('Move');
