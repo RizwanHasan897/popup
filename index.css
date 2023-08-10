@@ -880,9 +880,10 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 250px;
+  height: 100%;
   width: 100%;
   font-size: 1.5rem;
+  padding: 5px;
   gap: 10px;
 }
 
@@ -894,7 +895,8 @@ form > input {
   padding: .5rem;
 }
 
-.sumbit-btn{
+.sumbit-btn,
+.signup-btn{
   text-align: center;
   width: 50%;
   border-radius: 4px;
@@ -905,9 +907,23 @@ form > input {
   background-color: greenyellow;
 }
 
+.signup-btn {
+  background-color: aqua;
+}
+
+.signup-btn:active,
+.sumbit-btn:active{
+  scale: .8;
+}
+
+.signup-btn:hover {
+  background-color: rgb(121, 224, 224);
+}
+
 .sumbit-btn:hover{
   background-color: rgba(172, 255, 47, 0.384);
 }
+
 .welcome-page > h3 {
   text-align: center;
   font-size: 15px;
@@ -916,6 +932,17 @@ form > input {
 .pop-up-body.touch-scrollable {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+
+.theme-lable{
+  font-size: .8em;
+}
+
+.form-message{
+  font-size: .5em;
+  color: red;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @media only screen and (max-width: 525px) {
@@ -937,3 +964,4 @@ form > input {
   }
   
 }
+

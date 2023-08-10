@@ -6,6 +6,18 @@ var resizeHandles = [];
 var selectedPopUp = null;
 var themeOptionDiv = null;
 
+const themeOption = [
+  'Original',
+  'darkmode',
+  'bright',
+  'colorblind',
+  'funcky',
+  'starwars',
+  'anime',
+  'car',
+  'rocket'
+];
+
 let users = [
   {
     username: 'test',
@@ -17,10 +29,14 @@ let users = [
     password: 'password',
     theme: 'darkmode'
   }
-]
+];
 
-let users_serialized = JSON.stringify(users)
-let users_deserialized = JSON.parse(localStorage.getItem('users'))
+localStorage.setItem('users', JSON.stringify(users));
+let users_serialized = localStorage.getItem('users');
+let users_deserialized = JSON.parse(users_serialized);
+
+console.log(users_deserialized);
+
 
 
 function isTouchDevice() {
@@ -192,7 +208,90 @@ function popUpWelcomeScreen(popUpBody) {
 }
 
 function popUpRegister(popUpBody, welcomePageDiv) {
-  popUpBody.innerHTML = ` <input type="text" class="username" name="username" placeholder="Enter username here...">`
+  const form = document.createElement('form');
+
+  const usernameLabel = document.createElement('label');
+  usernameLabel.textContent = 'Username: ';
+  usernameLabel.setAttribute('for', 'username');
+
+  const usernameInput = document.createElement('input');
+  usernameInput.setAttribute('type', 'text');
+  usernameInput.classList.add('username');
+  usernameInput.setAttribute('name', 'username');
+  usernameInput.setAttribute('placeholder', 'Enter username here...');
+
+  const passwordLabel = document.createElement('label');
+  passwordLabel.textContent = 'Password: ';
+  passwordLabel.setAttribute('for', 'password');
+
+  const passwordInput = document.createElement('input');
+  passwordInput.setAttribute('type', 'password');
+  passwordInput.classList.add('password');
+  passwordInput.setAttribute('name', 'password');
+  passwordInput.setAttribute('placeholder', 'Enter Password here...');
+
+  const themeLable = document.createElement('label');
+  themeLable.textContent = 'Select your theme';
+  themeLable.setAttribute('for', 'themeSelect');
+  themeLable.classList.add('theme-lable');
+  
+  const ThemeSelect = document.createElement('select');
+  ThemeSelect.setAttribute('id', 'themeSelect');
+  ThemeSelect.classList.add('theme-select')
+
+  themeOption.forEach(theme => {
+    const themeOption = document.createElement('option');
+    themeOption.setAttribute('value', theme);
+    themeOption.textContent = theme;
+    ThemeSelect.appendChild(themeOption)
+  })
+
+  const submitButton = document.createElement('button');
+  submitButton.setAttribute('type', 'submit');
+  submitButton.classList.add('signup-btn');
+  submitButton.textContent = 'Sign up';
+
+  const message = document.createElement('p');
+  message.classList.add('form-message');
+  message.innerText = '';
+
+  submitButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    let newUser = {
+      username: usernameInput.value,
+      password: passwordInput.value,
+      theme: ThemeSelect.value
+    }
+
+    let users_serialized = localStorage.getItem('users');
+    let users_deserialized = JSON.parse(users_serialized);
+
+    if (usernameInput.value.length ===  0){
+      message.innerText = `invalid Username`
+    } else if (passwordInput.value.length ===  0){
+      message.innerText = `invalid Password`
+    }else {
+      users_deserialized.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users_deserialized));
+  
+      form.remove();
+      popUpLogin(popUpBody, welcomePageDiv);
+    }
+  });
+
+  form.appendChild(usernameLabel);
+  form.appendChild(usernameInput);
+  form.appendChild(passwordLabel);
+  form.appendChild(passwordInput);
+  form.appendChild(themeLable);
+  form.appendChild(ThemeSelect);
+  form.appendChild(message);
+  form.appendChild(submitButton);
+
+  popUpBody.appendChild(form);
+  welcomePageDiv.remove();
+
 }
 
 
@@ -520,18 +619,6 @@ function getHandleByElement(element) {
 
 // Change themes
 function addThemeList() {
-  const themeOption = [
-    'Original',
-    'darkmode',
-    'bright',
-    'colorblind',
-    'funcky',
-    'starwars',
-    'anime',
-    'car',
-    'rocket'
-  ];
-
   if (themeOptionDiv) {
     document.body.removeChild(themeOptionDiv);
     themeOptionDiv = null;
