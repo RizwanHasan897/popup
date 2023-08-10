@@ -23,11 +23,6 @@ let users = [
     username: 'test',
     password: 'test',
     theme: 'Original'
-  },
-  {
-    username: 'redgy',
-    password: 'password',
-    theme: 'darkmode'
   }
 ];
 
@@ -318,6 +313,10 @@ function popUpLogin(popUpBody, welcomePageDiv) {
   passwordInput.setAttribute('name', 'password');
   passwordInput.setAttribute('placeholder', 'Enter Password here...');
 
+  const message = document.createElement('p');
+  message.classList.add('form-message');
+  message.innerText = '';
+
   const submitButton = document.createElement('button');
   submitButton.setAttribute('type', 'submit');
   submitButton.classList.add('sumbit-btn');
@@ -325,10 +324,14 @@ function popUpLogin(popUpBody, welcomePageDiv) {
 
   submitButton.addEventListener('click', (e) => {
     e.preventDefault();
-    users.forEach(user => {
+    var currentUser = JSON.parse(localStorage.getItem('users'));
+    console.log(currentUser)
+    currentUser.forEach(user => {
       if (user.username === usernameInput.value && user.password === passwordInput.value) {
         changeTheme(user.theme);
         mainPage(usernameInput.value, popUpBody);
+      } else {
+        message.innerText = `The Username Or Password Is Incorrect `
       }
     });
   });
@@ -338,6 +341,7 @@ function popUpLogin(popUpBody, welcomePageDiv) {
   form.appendChild(usernameInput);
   form.appendChild(passwordLabel);
   form.appendChild(passwordInput);
+  form.appendChild(message);
   form.appendChild(submitButton);
 
   popUpBody.appendChild(form);
