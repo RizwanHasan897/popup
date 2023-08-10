@@ -329,7 +329,7 @@ function popUpLogin(popUpBody, welcomePageDiv) {
     currentUser.forEach(user => {
       if (user.username === usernameInput.value && user.password === passwordInput.value) {
         changeTheme(user.theme);
-        mainPage(usernameInput.value, popUpBody);
+        mainPage(usernameInput.value, popUpBody, user.theme);
       } else {
         message.innerText = `The Username Or Password Is Incorrect `
       }
@@ -348,7 +348,9 @@ function popUpLogin(popUpBody, welcomePageDiv) {
   welcomePageDiv.remove();
 
 }
-function mainPage(username, popUpBody) {
+function mainPage(username, popUpBody, theme) {
+  const parent = popUpBody.parentNode
+  parent.classList.add(theme)
   popUpBody.innerHTML = `<h1>Hello ${username} </h1>`
 }
 // move pop up
